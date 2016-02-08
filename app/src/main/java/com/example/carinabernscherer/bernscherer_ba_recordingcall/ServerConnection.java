@@ -30,37 +30,39 @@ public class ServerConnection {
      */
     public void connectToDatabase(File file, String username, String password) throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
 
-        String path = "sftp://almighty.cs.univie.ac.at/home/" + username;
-        path += file.getName();
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://mysql5.univie.ac.at:3306/" + username;
 
-        System.setProperty(driver, "");
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection con = DriverManager.getConnection(url, username, password);
+            String path = "sftp://almighty.cs.univie.ac.at/home/" + username;
+            path += file.getName();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String driver = "com.mysql.jdbc.Driver";
+            String url = "jdbc:mysql://mysql5.univie.ac.at:3306/" + username;
 
-        String a = "Connection zu MySQLServer";
-        Log.i(a, "open");
+            System.setProperty(driver, "");
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Connection con = DriverManager.getConnection(url, username, password);
 
-
-
-        String q = "CREATE TABLE IF NOT EXISTS `FILES`( " +
-                "NAME VARCHAR(100) UNIQUE, " +
-                "TYPE TEXT, " +
-                "SIZE TEXT, " +
-                "PATH TEXT )";
-
-        PreparedStatement preparedStatement1 = con.prepareStatement(q);
-        preparedStatement1.executeUpdate();
-        String query = "insert into FILES (Name,Type,Size, Path) values ('" + file.getName() + "','" + ".amr" + "','" + file.length() + "','" + path + "')";
-        PreparedStatement preparedStatement = con.prepareStatement(query);
-        preparedStatement.executeUpdate();
+            String a = "Connection zu MySQLServer";
+            Log.i(a, "open");
 
 
-        con.close();
+
+            String q = "CREATE TABLE IF NOT EXISTS `FILES`( " +
+                    "NAME VARCHAR(100) UNIQUE, " +
+                    "TYPE TEXT, " +
+                    "SIZE TEXT, " +
+                    "PATH TEXT )";
+
+            PreparedStatement preparedStatement1 = con.prepareStatement(q);
+            preparedStatement1.executeUpdate();
+            String query = "insert into FILES (Name,Type,Size, Path) values ('" + file.getName() + "','" + ".amr" + "','" + file.length() + "','" + path + "')";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.executeUpdate();
 
 
-    }
+            con.close();
+
+
+
+        }
 }

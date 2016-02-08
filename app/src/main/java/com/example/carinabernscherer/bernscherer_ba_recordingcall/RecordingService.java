@@ -12,6 +12,7 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.graphics.Color;
+import android.os.Environment;
 import android.os.IBinder;
 import android.app.Service;
 import android.content.Intent;
@@ -30,10 +31,9 @@ import com.jcraft.jsch.JSchException;
 public class RecordingService  extends Service
 
 {
-    private String username = "XXXXXXXXXX";
-    private String password = "XXXXXXXXXX";
+    private String username = "a1225809";
+    private String password = "Bernschi23";
     private DBDataSource dataSource;
-    public static final String DEFAULT_STORAGE_LOCATION = "/sdcard/PhoneLoad";
     private File f;
     private MediaRecorder recorder = null;
     private boolean isRecording = false;
@@ -47,22 +47,24 @@ public class RecordingService  extends Service
      * @throws JSchException
      */
     private File makeOutputFile() throws InterruptedException, JSchException {
-        File dir = new File(DEFAULT_STORAGE_LOCATION);
+
+        File dir = new File(getCacheDir(),File.separator+"PhoneLoad/");
 
 
         if (!dir.exists()) {
             try {
                 dir.mkdirs();
+                Log.i("Path to files ", dir.getAbsolutePath());
+
             } catch (Exception e) {
                 Log.e("PhoneLoad", "RecordService::makeOutputFile unable to create directory " + dir + ": " + e);
-
                 Toast t = Toast.makeText(getApplicationContext(), "unable to create the directory " + dir + " to store recordings: " + e, Toast.LENGTH_LONG);
                 t.show();
-                return null;
+
             }
         } else {
             if (!dir.canWrite()) {
-              Toast.makeText(getApplicationContext(), "Something went wrong PhoneLoad doesn't make the directory " + dir + " to store recordings", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something went wrong PhoneLoad doesn't make the directory " + dir + " to store recordings", Toast.LENGTH_LONG).show();
                 return null;
             }
         }
@@ -74,9 +76,9 @@ public class RecordingService  extends Service
 
         try {
              f =  File.createTempFile(prefix, suffix, dir);
-            String duration = "0.00000";
+            String size = String.valueOf(f.length());
 
-            RecordingFile file = new RecordingFile(prefix,duration,suffix,"/SDCARD"+f.getName());
+            RecordingFile file = new RecordingFile(prefix,size,suffix,dir.getPath()+f.getName());
             Toast.makeText(getApplicationContext(),"FILE SETZEN",Toast.LENGTH_LONG).show();
 
             dataSource = new DBDataSource(this);
@@ -168,19 +170,15 @@ public class RecordingService  extends Service
     public void onDestroy() {
         SFTPConnection sft = new SFTPConnection(f,username,password);
         sft.doInBackground();
-        ServerConnection c = new ServerConnection();
+       /** ServerConnection c = new ServerConnection();
+
         try {
             c.connectToDatabase(f,username,password);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+                e.printStackTrace();
         }
 
+        **/
         super.onDestroy();
 
         if (recorder != null) {

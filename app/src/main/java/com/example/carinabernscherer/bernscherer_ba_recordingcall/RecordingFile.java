@@ -7,7 +7,7 @@ package com.example.carinabernscherer.bernscherer_ba_recordingcall;
 public class RecordingFile {
 
     public String name;
-    public String duration;
+    public String size;
     public  String type;
     public String path;
 
@@ -15,13 +15,13 @@ public class RecordingFile {
     /**
      * Constructor
      * @param name
-     * @param duration
+     * @param size
      * @param type
      * @param path
      */
-    public RecordingFile(String name, String duration, String type,String path) {
+    public RecordingFile(String name, String size, String type,String path) {
         this.name = name;
-        this.duration = duration;
+        this.size = size;
         this.type = type;
         this.path = path;
 
@@ -35,12 +35,12 @@ public class RecordingFile {
         this.name = name;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getSize() {
+        return size;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public String getType() {
