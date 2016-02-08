@@ -31,8 +31,8 @@ import com.jcraft.jsch.JSchException;
 public class RecordingService  extends Service
 
 {
-    private String username = "a1225809";
-    private String password = "Bernschi23";
+    private String username = "XXXXXXXX";
+    private String password = "XXXXXXXX";
     private DBDataSource dataSource;
     private File f;
     private MediaRecorder recorder = null;
@@ -54,7 +54,7 @@ public class RecordingService  extends Service
         if (!dir.exists()) {
             try {
                 dir.mkdirs();
-                Log.i("Path to files ", dir.getAbsolutePath());
+
 
             } catch (Exception e) {
                 Log.e("PhoneLoad", "RecordService::makeOutputFile unable to create directory " + dir + ": " + e);
@@ -69,7 +69,7 @@ public class RecordingService  extends Service
             }
         }
 
-
+        Log.i("Path to files ", dir.getAbsolutePath());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SS");
         String prefix = sdf.format(new Date()) + "voicecall";
         String suffix = ".amr";
